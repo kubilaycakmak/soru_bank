@@ -140,7 +140,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     controller: scrollController,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, position) {
-                      GestureDetector(
+                      return GestureDetector(
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Card(
