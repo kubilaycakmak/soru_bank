@@ -1,4 +1,4 @@
-#Mon Mar 04 01:28:07 EET 2019
-base.0=/home/workstation/Documents/GitHub/soru_bank/build/app/intermediates/transforms/dexMerger/debug/0
+#Tue Mar 05 18:23:34 EET 2019
+base.0=C\:\\Users\\workStation\\Documents\\GitHub\\soru_bank\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex

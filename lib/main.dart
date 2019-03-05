@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soru_bank/CardItemModel.dart';
+import 'screens/QuestionScreen.dart';
 
 void main() => runApp(SoruBank());
 
@@ -8,11 +9,14 @@ class SoruBank extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, //will false when we finish debug
-      title: 'Soru Bank',
+      title: 'Bi Soru',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: HomePage(),
+      routes: <String, WidgetBuilder>{
+        "/question": (BuildContext context) => QuestionScreen()
+      }
     );
   }
 }
@@ -133,7 +137,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  height: 350.0,
+                  height: MediaQuery.of(context).size.height * 0.5,
                   child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: 3,
@@ -142,8 +146,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     itemBuilder: (context, position) {
                       return GestureDetector(
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(5.0),
                           child: Card(
+                            elevation: 2.0,
                             child: Container(
                               width: 250.0,
                               child: Column(
@@ -169,14 +174,14 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(10.0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 8.0, vertical: 4.0),
+                                              horizontal: 10.0, vertical: 4.0),
                                           child: Text(
                                             "${cardsList[position].tasksRemaining} Sorular",
                                             style:
@@ -184,7 +189,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(10.0),
                                           child: LinearProgressIndicator(
                                             value: cardsList[position]
                                                 .taskCompletion,
@@ -197,13 +202,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
+                                borderRadius: BorderRadius.circular(12.0)),
                           ),
                         ),
                         onHorizontalDragEnd: (details) {
                           animationController = AnimationController(
                               vsync: this,
-                              duration: Duration(milliseconds: 500));
+                              duration: Duration(milliseconds: 20));
                           curvedAnimation = CurvedAnimation(
                               parent: animationController,
                               curve: Curves.fastOutSlowIn);
@@ -235,6 +240,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           });
                           colorTween.animate(curvedAnimation);
                           animationController.forward();
+                        },
+                        onTap: (){
+                          Navigator.of(context).pushNamed("/question");
                         },
                       );
                     },
