@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soru_bank/CardItemModel.dart';
 import 'screens/QuestionScreen.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(SoruBank());
 
@@ -55,7 +56,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
-
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       backgroundColor: currentColor,
       appBar: AppBar(
@@ -137,239 +138,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     style: TextStyle(color: Colors.white, fontSize: 17.0),
                   ),
                 ),
-                media.width < 350
-                    ? Container(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 3,
-                          controller: scrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, position) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.all(5.0),
-                                child: Card(
-                                  elevation: 2.0,
-                                  child: Container(
-                                    width: 280.0,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Icon(
-                                                cardsList[position].icon,
-                                                color: appColors[position],
-                                              ),
-                                              Icon(
-                                                Icons.more_vert,
-                                                color: Colors.grey,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.0,
-                                                    vertical: 4.0),
-                                                child: Text(
-                                                  "${cardsList[position].tasksRemaining} Sorular",
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(10.0),
-                                                child: LinearProgressIndicator(
-                                                  value: cardsList[position]
-                                                      .taskCompletion,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(12.0)),
-                                ),
-                              ),
-                              onHorizontalDragEnd: (details) {
-                                animationController = AnimationController(
-                                    vsync: this,
-                                    duration: Duration(milliseconds: 20));
-                                curvedAnimation = CurvedAnimation(
-                                    parent: animationController,
-                                    curve: Curves.fastOutSlowIn);
-                                animationController.addListener(() {
-                                  setState(() {
-                                    currentColor =
-                                        colorTween.evaluate(curvedAnimation);
-                                  });
-                                });
-                                if (details.velocity.pixelsPerSecond.dx > 0) {
-                                  if (cardIndex > 0) {
-                                    cardIndex--;
-                                    colorTween = ColorTween(
-                                        begin: currentColor,
-                                        end: appColors[cardIndex]);
-                                  }
-                                } else {
-                                  if (cardIndex < 2) {
-                                    cardIndex++;
-                                    colorTween = ColorTween(
-                                        begin: currentColor,
-                                        end: appColors[cardIndex]);
-                                  }
-                                }
-                                setState(() {
-                                  scrollController.animateTo(
-                                      (cardIndex) * 256.0,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.fastOutSlowIn);
-                                });
-                                colorTween.animate(curvedAnimation);
-                                animationController.forward();
-                              },
-                              onTap: () {
-                                Navigator.of(context).pushNamed("/question");
-                              },
-                            );
-                          },
-                        ),
-                      )
-                    : Container(
-                        height: MediaQuery.of(context).size.height * 0.55,
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 3,
-                          controller: scrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, position) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.all(5.0),
-                                child: Card(
-                                  elevation: 2.0,
-                                  child: Container(
-                                    width: 280.0,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.all(20.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Icon(
-                                                cardsList[position].icon,
-                                                color: appColors[position],
-                                              ),
-                                              Icon(
-                                                Icons.more_vert,
-                                                color: Colors.grey,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.0,
-                                                    vertical: 4.0),
-                                                child: Text(
-                                                  "${cardsList[position].tasksRemaining} Sorular",
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(10.0),
-                                                child: LinearProgressIndicator(
-                                                  value: cardsList[position]
-                                                      .taskCompletion,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(12.0)),
-                                ),
-                              ),
-                              onHorizontalDragEnd: (details) {
-                                animationController = AnimationController(
-                                    vsync: this,
-                                    duration: Duration(milliseconds: 20));
-                                curvedAnimation = CurvedAnimation(
-                                    parent: animationController,
-                                    curve: Curves.fastOutSlowIn);
-                                animationController.addListener(() {
-                                  setState(() {
-                                    currentColor =
-                                        colorTween.evaluate(curvedAnimation);
-                                  });
-                                });
-                                if (details.velocity.pixelsPerSecond.dx > 0) {
-                                  if (cardIndex > 0) {
-                                    cardIndex--;
-                                    colorTween = ColorTween(
-                                        begin: currentColor,
-                                        end: appColors[cardIndex]);
-                                  }
-                                } else {
-                                  if (cardIndex < 2) {
-                                    cardIndex++;
-                                    colorTween = ColorTween(
-                                        begin: currentColor,
-                                        end: appColors[cardIndex]);
-                                  }
-                                }
-                                setState(() {
-                                  scrollController.animateTo(
-                                      (cardIndex) * 256.0,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.fastOutSlowIn);
-                                });
-                                colorTween.animate(curvedAnimation);
-                                animationController.forward();
-                              },
-                              onTap: () {
-                                Navigator.of(context).pushNamed("/question");
-                              },
-                            );
-                          },
-                        ),
-                      ),
+                Container(child: _buildChild(context),)
               ],
             ),
           ],
@@ -377,5 +146,319 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       drawer: Drawer(),
     );
+  }
+
+  Widget _buildChild(context) {
+    if (MediaQuery.of(context).size.width < 350) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, position) {
+            return GestureDetector(
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Card(
+                  elevation: 2.0,
+                  child: Container(
+                    width: 250.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Icon(
+                                cardsList[position].icon,
+                                color: appColors[position],
+                              ),
+                              Icon(
+                                Icons.more_vert,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 4.0),
+                                child: Text(
+                                  "${cardsList[position].tasksRemaining} Sorular",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: LinearProgressIndicator(
+                                  value: cardsList[position].taskCompletion,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0)),
+                ),
+              ),
+              onHorizontalDragEnd: (details) {
+                animationController = AnimationController(
+                    vsync: this, duration: Duration(milliseconds: 20));
+                curvedAnimation = CurvedAnimation(
+                    parent: animationController, curve: Curves.fastOutSlowIn);
+                animationController.addListener(() {
+                  setState(() {
+                    currentColor = colorTween.evaluate(curvedAnimation);
+                  });
+                });
+                if (details.velocity.pixelsPerSecond.dx > 0) {
+                  if (cardIndex > 0) {
+                    cardIndex--;
+                    colorTween = ColorTween(
+                        begin: currentColor, end: appColors[cardIndex]);
+                  }
+                } else {
+                  if (cardIndex < 2) {
+                    cardIndex++;
+                    colorTween = ColorTween(
+                        begin: currentColor, end: appColors[cardIndex]);
+                  }
+                }
+                setState(() {
+                  scrollController.animateTo((cardIndex) * 256.0,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.fastOutSlowIn);
+                });
+                colorTween.animate(curvedAnimation);
+                animationController.forward();
+              },
+              onTap: () {
+                Navigator.of(context).pushNamed("/question");
+              },
+            );
+          },
+        ),
+      );
+    } else if (MediaQuery.of(context).size.width > 350 &&
+        MediaQuery.of(context).size.width < 400) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.55,
+        child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, position) {
+            return GestureDetector(
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Card(
+                  elevation: 2.0,
+                  child: Container(
+                    width: 280.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Icon(
+                                cardsList[position].icon,
+                                color: appColors[position],
+                              ),
+                              Icon(
+                                Icons.more_vert,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 4.0),
+                                child: Text(
+                                  "${cardsList[position].tasksRemaining} Sorular",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: LinearProgressIndicator(
+                                  value: cardsList[position].taskCompletion,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0)),
+                ),
+              ),
+              onHorizontalDragEnd: (details) {
+                animationController = AnimationController(
+                    vsync: this, duration: Duration(milliseconds: 20));
+                curvedAnimation = CurvedAnimation(
+                    parent: animationController, curve: Curves.fastOutSlowIn);
+                animationController.addListener(() {
+                  setState(() {
+                    currentColor = colorTween.evaluate(curvedAnimation);
+                  });
+                });
+                if (details.velocity.pixelsPerSecond.dx > 0) {
+                  if (cardIndex > 0) {
+                    cardIndex--;
+                    colorTween = ColorTween(
+                        begin: currentColor, end: appColors[cardIndex]);
+                  }
+                } else {
+                  if (cardIndex < 2) {
+                    cardIndex++;
+                    colorTween = ColorTween(
+                        begin: currentColor, end: appColors[cardIndex]);
+                  }
+                }
+                setState(() {
+                  scrollController.animateTo((cardIndex) * 256.0,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.fastOutSlowIn);
+                });
+                colorTween.animate(curvedAnimation);
+                animationController.forward();
+              },
+              onTap: () {
+                Navigator.of(context).pushNamed("/question");
+              },
+            );
+          },
+        ),
+      );
+    } else if (MediaQuery.of(context).size.width > 400) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, position) {
+            return GestureDetector(
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Card(
+                  elevation: 2.0,
+                  child: Container(
+                    width: 280.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Icon(
+                                cardsList[position].icon,
+                                color: appColors[position],
+                              ),
+                              Icon(
+                                Icons.more_vert,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 4.0),
+                                child: Text(
+                                  "${cardsList[position].tasksRemaining} Sorular",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: LinearProgressIndicator(
+                                  value: cardsList[position].taskCompletion,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0)),
+                ),
+              ),
+              onHorizontalDragEnd: (details) {
+                animationController = AnimationController(
+                    vsync: this, duration: Duration(milliseconds: 20));
+                curvedAnimation = CurvedAnimation(
+                    parent: animationController, curve: Curves.fastOutSlowIn);
+                animationController.addListener(() {
+                  setState(() {
+                    currentColor = colorTween.evaluate(curvedAnimation);
+                  });
+                });
+                if (details.velocity.pixelsPerSecond.dx > 0) {
+                  if (cardIndex > 0) {
+                    cardIndex--;
+                    colorTween = ColorTween(
+                        begin: currentColor, end: appColors[cardIndex]);
+                  }
+                } else {
+                  if (cardIndex < 2) {
+                    cardIndex++;
+                    colorTween = ColorTween(
+                        begin: currentColor, end: appColors[cardIndex]);
+                  }
+                }
+                setState(() {
+                  scrollController.animateTo((cardIndex) * 256.0,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.fastOutSlowIn);
+                });
+                colorTween.animate(curvedAnimation);
+                animationController.forward();
+              },
+              onTap: () {
+                Navigator.of(context).pushNamed("/question");
+              },
+            );
+          },
+        ),
+      );
+    }
   }
 }
