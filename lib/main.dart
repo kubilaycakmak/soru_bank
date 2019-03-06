@@ -8,16 +8,15 @@ class SoruBank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, //will false when we finish debug
-      title: 'Bi Soru',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-      routes: <String, WidgetBuilder>{
-        "/question": (BuildContext context) => QuestionScreen()
-      }
-    );
+        debugShowCheckedModeBanner: false, //will false when we finish debug
+        title: 'Bi Soru',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: HomePage(),
+        routes: <String, WidgetBuilder>{
+          "/question": (BuildContext context) => QuestionScreen()
+        });
   }
 }
 
@@ -55,6 +54,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: currentColor,
       appBar: AppBar(
@@ -83,13 +84,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: <Widget>[
             Row(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 64.0, vertical: 2.0),
+              padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 2.0),
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      padding: EdgeInsets.symmetric(vertical: 5.0),
                       child: Icon(
                         Icons.account_circle,
                         size: 45.0,
@@ -97,7 +98,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 12.0),
+                      padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 10.0),
                       child: Text(
                         "Merhaba, Kullanıcı.",
                         style: TextStyle(
@@ -125,7 +126,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: <Widget>[
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 64.0, vertical: 16.0),
+                      EdgeInsets.symmetric(horizontal: 45.0, vertical: 16.0),
                   child: Text(
                     "BUGÜN: " +
                         nowDate.day.toString() +
@@ -136,118 +137,239 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     style: TextStyle(color: Colors.white, fontSize: 17.0),
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    controller: scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, position) {
-                      return GestureDetector(
-                        child: Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Card(
-                            elevation: 2.0,
-                            child: Container(
-                              width: 250.0,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Row(
+                media.width < 350
+                    ? Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 3,
+                          controller: scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, position) {
+                            return GestureDetector(
+                              child: Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Card(
+                                  elevation: 2.0,
+                                  child: Container(
+                                    width: 280.0,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Icon(
-                                          cardsList[position].icon,
-                                          color: appColors[position],
-                                        ),
-                                        Icon(
-                                          Icons.more_vert,
-                                          color: Colors.grey,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
                                         Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.0, vertical: 4.0),
-                                          child: Text(
-                                            "${cardsList[position].tasksRemaining} Sorular",
-                                            style:
-                                                TextStyle(color: Colors.grey),
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Icon(
+                                                cardsList[position].icon,
+                                                color: appColors[position],
+                                              ),
+                                              Icon(
+                                                Icons.more_vert,
+                                                color: Colors.grey,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.all(10.0),
-                                          child: LinearProgressIndicator(
-                                            value: cardsList[position]
-                                                .taskCompletion,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.0,
+                                                    vertical: 4.0),
+                                                child: Text(
+                                                  "${cardsList[position].tasksRemaining} Sorular",
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: LinearProgressIndicator(
+                                                  value: cardsList[position]
+                                                      .taskCompletion,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(12.0)),
+                                ),
                               ),
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0)),
-                          ),
+                              onHorizontalDragEnd: (details) {
+                                animationController = AnimationController(
+                                    vsync: this,
+                                    duration: Duration(milliseconds: 20));
+                                curvedAnimation = CurvedAnimation(
+                                    parent: animationController,
+                                    curve: Curves.fastOutSlowIn);
+                                animationController.addListener(() {
+                                  setState(() {
+                                    currentColor =
+                                        colorTween.evaluate(curvedAnimation);
+                                  });
+                                });
+                                if (details.velocity.pixelsPerSecond.dx > 0) {
+                                  if (cardIndex > 0) {
+                                    cardIndex--;
+                                    colorTween = ColorTween(
+                                        begin: currentColor,
+                                        end: appColors[cardIndex]);
+                                  }
+                                } else {
+                                  if (cardIndex < 2) {
+                                    cardIndex++;
+                                    colorTween = ColorTween(
+                                        begin: currentColor,
+                                        end: appColors[cardIndex]);
+                                  }
+                                }
+                                setState(() {
+                                  scrollController.animateTo(
+                                      (cardIndex) * 256.0,
+                                      duration: Duration(milliseconds: 500),
+                                      curve: Curves.fastOutSlowIn);
+                                });
+                                colorTween.animate(curvedAnimation);
+                                animationController.forward();
+                              },
+                              onTap: () {
+                                Navigator.of(context).pushNamed("/question");
+                              },
+                            );
+                          },
                         ),
-                        onHorizontalDragEnd: (details) {
-                          animationController = AnimationController(
-                              vsync: this,
-                              duration: Duration(milliseconds: 20));
-                          curvedAnimation = CurvedAnimation(
-                              parent: animationController,
-                              curve: Curves.fastOutSlowIn);
-                          animationController.addListener(() {
-                            setState(() {
-                              currentColor =
-                                  colorTween.evaluate(curvedAnimation);
-                            });
-                          });
-                          if (details.velocity.pixelsPerSecond.dx > 0) {
-                            if (cardIndex > 0) {
-                              cardIndex--;
-                              colorTween = ColorTween(
-                                  begin: currentColor,
-                                  end: appColors[cardIndex]);
-                            }
-                          } else {
-                            if (cardIndex < 2) {
-                              cardIndex++;
-                              colorTween = ColorTween(
-                                  begin: currentColor,
-                                  end: appColors[cardIndex]);
-                            }
-                          }
-                          setState(() {
-                            scrollController.animateTo((cardIndex) * 256.0,
-                                duration: Duration(milliseconds: 500),
-                                curve: Curves.fastOutSlowIn);
-                          });
-                          colorTween.animate(curvedAnimation);
-                          animationController.forward();
-                        },
-                        onTap: (){
-                          Navigator.of(context).pushNamed("/question");
-                        },
-                      );
-                    },
-                  ),
-                ),
+                      )
+                    : Container(
+                        height: MediaQuery.of(context).size.height * 0.55,
+                        child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 3,
+                          controller: scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, position) {
+                            return GestureDetector(
+                              child: Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Card(
+                                  elevation: 2.0,
+                                  child: Container(
+                                    width: 280.0,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(20.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Icon(
+                                                cardsList[position].icon,
+                                                color: appColors[position],
+                                              ),
+                                              Icon(
+                                                Icons.more_vert,
+                                                color: Colors.grey,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.0,
+                                                    vertical: 4.0),
+                                                child: Text(
+                                                  "${cardsList[position].tasksRemaining} Sorular",
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: LinearProgressIndicator(
+                                                  value: cardsList[position]
+                                                      .taskCompletion,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(12.0)),
+                                ),
+                              ),
+                              onHorizontalDragEnd: (details) {
+                                animationController = AnimationController(
+                                    vsync: this,
+                                    duration: Duration(milliseconds: 20));
+                                curvedAnimation = CurvedAnimation(
+                                    parent: animationController,
+                                    curve: Curves.fastOutSlowIn);
+                                animationController.addListener(() {
+                                  setState(() {
+                                    currentColor =
+                                        colorTween.evaluate(curvedAnimation);
+                                  });
+                                });
+                                if (details.velocity.pixelsPerSecond.dx > 0) {
+                                  if (cardIndex > 0) {
+                                    cardIndex--;
+                                    colorTween = ColorTween(
+                                        begin: currentColor,
+                                        end: appColors[cardIndex]);
+                                  }
+                                } else {
+                                  if (cardIndex < 2) {
+                                    cardIndex++;
+                                    colorTween = ColorTween(
+                                        begin: currentColor,
+                                        end: appColors[cardIndex]);
+                                  }
+                                }
+                                setState(() {
+                                  scrollController.animateTo(
+                                      (cardIndex) * 256.0,
+                                      duration: Duration(milliseconds: 500),
+                                      curve: Curves.fastOutSlowIn);
+                                });
+                                colorTween.animate(curvedAnimation);
+                                animationController.forward();
+                              },
+                              onTap: () {
+                                Navigator.of(context).pushNamed("/question");
+                              },
+                            );
+                          },
+                        ),
+                      ),
               ],
             ),
           ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:ui';
 
 class QuestionScreen extends StatefulWidget {
   @override
@@ -10,7 +12,10 @@ class QuestionScreen extends StatefulWidget {
 class QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
+
         // floatingActionButton: FloatingActionButton.extended(
         //   icon: Icon(Icons.close),
         //   label: Text("Kapat"),
@@ -28,15 +33,11 @@ class QuestionScreenState extends State<QuestionScreen> {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.menu),
-                onPressed: () {
-
-                },
+                onPressed: () {},
               ),
               IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: (){
-                  
-                },
+                onPressed: () {},
               )
             ],
           ),
@@ -50,55 +51,21 @@ class QuestionScreenState extends State<QuestionScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 25.0, left: 20.0, right: 20.0),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                color: Colors.black,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 150),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 150),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 150),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 150),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
+            media.width > 350 ? ContainerMore350 : ContainerLess350
           ],
         ));
   }
 }
+
+final ContainerLess350 = new Container(
+  height: 200.0,
+  alignment: Alignment.center,
+  child: Text("data"),
+  color: Colors.black,
+);
+final ContainerMore350 = new Container(
+  height: 300.0,
+  alignment: Alignment.center,
+  child: Text("data"),
+  color: Colors.blue,
+  );
