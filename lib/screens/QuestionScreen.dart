@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui';
+import 'package:soru_bank/question/Question.dart';
 
 class QuestionScreen extends StatefulWidget {
   @override
@@ -10,10 +11,22 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class QuestionScreenState extends State<QuestionScreen> {
+  Question q1 = Question(
+      AssetImage("questions/soru1.png"), "205", "224", "245", "327", "327");
+  bool pressed =true;
+  String _text = "Doğru";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+    
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
     SystemChrome.setEnabledSystemUIOverlays([]);
+    var d1, d2, d3, d4 = Colors.teal;
+    var media = MediaQuery.of(context).size;
+    var pixelRatio = MediaQuery.of(context).devicePixelRatio;
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
@@ -26,7 +39,9 @@ class QuestionScreenState extends State<QuestionScreen> {
             ),
             IconButton(
               icon: Icon(Icons.more_vert),
-              onPressed: () {},
+              onPressed: () {
+                print(MediaQuery.of(context).size.height);
+              },
             )
           ],
         ),
@@ -40,181 +55,126 @@ class QuestionScreenState extends State<QuestionScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Column(
         children: <Widget>[
-          Container(child: _buildChild(context),)
-        ],
-      ),
-    );
-  }
-}
-
-Widget _buildChild(context) {
-  if (MediaQuery.of(context).size.width < 350) {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 240.0,
-            alignment: Alignment.center,
-            child: Text("data"),
-            color: Colors.black,
-          ),
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    RaisedButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 120),
-                      child: Text("1.data"),
-                      onPressed: () {},
-                    ),
-                    RaisedButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 120),
-                      child: Text("2.data"),
-                      onPressed: () {},
-                    ),
-                    RaisedButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 120),
-                      child: Text("3.data"),
-                      onPressed: () {},
-                    ),
-                    RaisedButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 120),
-                      child: Text("4.data"),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  } else if (MediaQuery.of(context).size.width > 350 && MediaQuery.of(context).size.width < 400) {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 300.0,
-            alignment: Alignment.center,
-            child: Text("data"),
-            color: Colors.blue,
-          ),
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
+          Padding(
+            padding: EdgeInsets.all(0),
+            child: Column(
+              children: <Widget>[
+                pixelRatio >= 3
+                    ? Container(
+                        height: media.height / 2,
+                        alignment: Alignment.center,
+                        child: Image(
+                          image: q1.questionImage,
+                        ),
+                        color: Colors.white,
+                      )
+                    : Container(
+                        height: media.height / 2.5,
+                        alignment: Alignment.center,
+                        child: Image(
+                          image: q1.questionImage,
+                        ),
+                        color: Colors.white,
+                      ),
+                Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 0),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 150),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 150),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 150),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 150),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }else if (MediaQuery.of(context).size.width > 400) {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 350.0,
-            alignment: Alignment.center,
-            child: Text("data"),
-            color: Colors.blue,
-          ),
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 0),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 160),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 160),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 160),
-                        child: Text("1.data"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 160),
-                        child: Text("1.data"),
-                        onPressed: () {},
+                      padding: EdgeInsets.all(0),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: media.height / 100),
+                            child: RaisedButton(
+                              color: pressed ? Colors.red : Colors.green,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: media.height / 50,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width / 2.6),
+                              child: Text(q1.d1, style: TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                setState(() {
+                                  if (q1.d1 == q1.answer) {
+                                    print("true");
+                                    pressed = !pressed;
+                                  } else {
+                                    print("wrong");
+                                    pressed = pressed;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: media.height / 100),
+                            child: RaisedButton(
+                              color: pressed ? Colors.red : Colors.green,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: media.height / 50,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width / 2.6),
+                              child: Text(q1.d2, style: TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                setState(() {
+                                  if (q1.d2 == q1.answer) {
+                                    print("true");
+                                    pressed = !pressed;
+                                  } else {
+                                    pressed = pressed;
+                                    print("wrong");
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: media.height / 100),
+                            child: RaisedButton(
+                              color: pressed ? Colors.red : Colors.green,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: media.height / 50,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width / 2.6),
+                              child: Text(q1.d3, style: TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                setState(() {
+                                  if (q1.d2 == q1.answer) {
+                                    print("true");
+                                    pressed = !pressed;
+                                  } else {
+                                    print("wrong");
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: media.height / 100),
+                            child: RaisedButton(
+                              color: pressed ? Colors.red : Colors.green,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: media.height / 50,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width / 2.6),
+                              child: Text(q1.d4, style: TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                setState(() {
+                                  if (q1.d4 == q1.answer) {
+                                    print("true");
+                                    pressed = !pressed;
+                                  } else {
+                                    print("wrong");
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

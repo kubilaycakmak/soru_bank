@@ -55,8 +55,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
     SystemChrome.setEnabledSystemUIOverlays([]);
+    var media = MediaQuery.of(context).size;
+    var pixelRatio = MediaQuery.of(context).devicePixelRatio;
     return Scaffold(
       backgroundColor: currentColor,
       appBar: AppBar(
@@ -72,6 +73,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               icon: Icon(Icons.info),
               onPressed: () {
                 print(nowDate);
+                print(MediaQuery.of(context).size.height);
+                print(MediaQuery.of(context).size.width);
+                print(MediaQuery.of(context).devicePixelRatio);
               },
             ), //will IconButton to clickable
           ),
@@ -90,34 +94,76 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 45.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 10.0),
-                      child: Text(
-                        "Merhaba, Kullanıcı.",
-                        style: TextStyle(
-                            fontSize: 30.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w200),
-                      ),
-                    ),
-                    Text(
-                      "Haydi, Göster kendini.",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      "Bugün senin için 3 yeni farklı dersten sorular hazırladık.",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+                    pixelRatio >= 3
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.0),
+                            child: Icon(
+                              Icons.account_circle,
+                              size: 65.0,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.0),
+                            child: Icon(
+                              Icons.account_circle,
+                              size: 55.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                    pixelRatio >= 3
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 0),
+                            child: Text(
+                              "Merhaba, Kullanıcı.",
+                              style: TextStyle(
+                                  fontSize: pixelRatio * 10,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 0),
+                            child: Text(
+                              "Merhaba, Kullanıcı.",
+                              style: TextStyle(
+                                  fontSize: pixelRatio * 10,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ),
+                    pixelRatio >= 3
+                        ? Text(
+                            "Haydi, Göster kendini.",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: pixelRatio * 7,
+                                fontWeight: FontWeight.w200),
+                          )
+                        : Text(
+                            "Haydi, Göster kendini.",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: pixelRatio * 10,
+                                fontWeight: FontWeight.w200),
+                          ),
+                          pixelRatio >= 3
+                        ? Text(
+                            "Senin için sorular hazırladık, Hazır olduğuna emin olduğunda başla!",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: pixelRatio * 7,
+                                fontWeight: FontWeight.w200),
+                          )
+                        : Text(
+                            "Senin için sorular hazırladık, Hazır olduğuna emin olduğunda başla!",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: pixelRatio * 10,
+                                fontWeight: FontWeight.w200),
+                          ),
                   ],
                 ),
               ),
@@ -127,7 +173,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: <Widget>[
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 45.0, vertical: 16.0),
+                      EdgeInsets.symmetric(horizontal: 45.0, vertical: 5.0),
                   child: Text(
                     "BUGÜN: " +
                         nowDate.day.toString() +
@@ -135,330 +181,134 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         nowDate.weekday.toString() +
                         "/" +
                         nowDate.year.toString(), //get today date
-                    style: TextStyle(color: Colors.white, fontSize: 17.0),
+                    style: TextStyle(color: Colors.white, fontSize: 15.0),
                   ),
                 ),
-                Container(child: _buildChild(context),)
+                Container(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 3,
+                      controller: scrollController,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, position) {
+                        return GestureDetector(
+                          child: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Card(
+                              elevation: 2.0,
+                              child: Container(
+                                width: media.width - 90,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(30.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Icon(
+                                            cardsList[position].icon,
+                                            color: appColors[position],
+                                          ),
+                                          Icon(
+                                            Icons.more_vert,
+                                            color: Colors.grey,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.0,
+                                                vertical: 4.0),
+                                            child: Text(
+                                              "${cardsList[position].tasksRemaining} Sorular",
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(10.0),
+                                            child: LinearProgressIndicator(
+                                              value: cardsList[position]
+                                                  .taskCompletion,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0)),
+                            ),
+                          ),
+                          onHorizontalDragEnd: (details) {
+                            animationController = AnimationController(
+                                vsync: this,
+                                duration: Duration(milliseconds: 20));
+                            curvedAnimation = CurvedAnimation(
+                                parent: animationController,
+                                curve: Curves.fastOutSlowIn);
+                            animationController.addListener(() {
+                              setState(() {
+                                currentColor =
+                                    colorTween.evaluate(curvedAnimation);
+                              });
+                            });
+                            if (details.velocity.pixelsPerSecond.dx > 0) {
+                              if (cardIndex > 0) {
+                                cardIndex--;
+                                colorTween = ColorTween(
+                                    begin: currentColor,
+                                    end: appColors[cardIndex]);
+                              }
+                            } else {
+                              if (cardIndex < 2) {
+                                cardIndex++;
+                                colorTween = ColorTween(
+                                    begin: currentColor,
+                                    end: appColors[cardIndex]);
+                              }
+                            }
+                            setState(() {
+                              scrollController.animateTo((cardIndex) * 256.0,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.fastOutSlowIn);
+                            });
+                            colorTween.animate(curvedAnimation);
+                            animationController.forward();
+                          },
+                          onTap: () {
+                            Navigator.of(context).pushNamed("/question");
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                )
               ],
             ),
           ],
         ),
       ),
-      drawer: Drawer(),
+      drawer: Semantics(
+        container: true,
+        button: true,
+        child: Text("This is Demo App", style: TextStyle(color: Colors.white, fontSize: pixelRatio*10),),
+      ),
     );
-  }
-
-  Widget _buildChild(context) {
-    if (MediaQuery.of(context).size.width < 350) {
-      return Container(
-        height: MediaQuery.of(context).size.height * 0.4,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 3,
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, position) {
-            return GestureDetector(
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Card(
-                  elevation: 2.0,
-                  child: Container(
-                    width: 250.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Icon(
-                                cardsList[position].icon,
-                                color: appColors[position],
-                              ),
-                              Icon(
-                                Icons.more_vert,
-                                color: Colors.grey,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 4.0),
-                                child: Text(
-                                  "${cardsList[position].tasksRemaining} Sorular",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: LinearProgressIndicator(
-                                  value: cardsList[position].taskCompletion,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                ),
-              ),
-              onHorizontalDragEnd: (details) {
-                animationController = AnimationController(
-                    vsync: this, duration: Duration(milliseconds: 20));
-                curvedAnimation = CurvedAnimation(
-                    parent: animationController, curve: Curves.fastOutSlowIn);
-                animationController.addListener(() {
-                  setState(() {
-                    currentColor = colorTween.evaluate(curvedAnimation);
-                  });
-                });
-                if (details.velocity.pixelsPerSecond.dx > 0) {
-                  if (cardIndex > 0) {
-                    cardIndex--;
-                    colorTween = ColorTween(
-                        begin: currentColor, end: appColors[cardIndex]);
-                  }
-                } else {
-                  if (cardIndex < 2) {
-                    cardIndex++;
-                    colorTween = ColorTween(
-                        begin: currentColor, end: appColors[cardIndex]);
-                  }
-                }
-                setState(() {
-                  scrollController.animateTo((cardIndex) * 256.0,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.fastOutSlowIn);
-                });
-                colorTween.animate(curvedAnimation);
-                animationController.forward();
-              },
-              onTap: () {
-                Navigator.of(context).pushNamed("/question");
-              },
-            );
-          },
-        ),
-      );
-    } else if (MediaQuery.of(context).size.width > 350 &&
-        MediaQuery.of(context).size.width < 400) {
-      return Container(
-        height: MediaQuery.of(context).size.height * 0.55,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 3,
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, position) {
-            return GestureDetector(
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Card(
-                  elevation: 2.0,
-                  child: Container(
-                    width: 280.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Icon(
-                                cardsList[position].icon,
-                                color: appColors[position],
-                              ),
-                              Icon(
-                                Icons.more_vert,
-                                color: Colors.grey,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 4.0),
-                                child: Text(
-                                  "${cardsList[position].tasksRemaining} Sorular",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: LinearProgressIndicator(
-                                  value: cardsList[position].taskCompletion,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                ),
-              ),
-              onHorizontalDragEnd: (details) {
-                animationController = AnimationController(
-                    vsync: this, duration: Duration(milliseconds: 20));
-                curvedAnimation = CurvedAnimation(
-                    parent: animationController, curve: Curves.fastOutSlowIn);
-                animationController.addListener(() {
-                  setState(() {
-                    currentColor = colorTween.evaluate(curvedAnimation);
-                  });
-                });
-                if (details.velocity.pixelsPerSecond.dx > 0) {
-                  if (cardIndex > 0) {
-                    cardIndex--;
-                    colorTween = ColorTween(
-                        begin: currentColor, end: appColors[cardIndex]);
-                  }
-                } else {
-                  if (cardIndex < 2) {
-                    cardIndex++;
-                    colorTween = ColorTween(
-                        begin: currentColor, end: appColors[cardIndex]);
-                  }
-                }
-                setState(() {
-                  scrollController.animateTo((cardIndex) * 256.0,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.fastOutSlowIn);
-                });
-                colorTween.animate(curvedAnimation);
-                animationController.forward();
-              },
-              onTap: () {
-                Navigator.of(context).pushNamed("/question");
-              },
-            );
-          },
-        ),
-      );
-    } else if (MediaQuery.of(context).size.width > 400) {
-      return Container(
-        height: MediaQuery.of(context).size.height * 0.6,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 3,
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, position) {
-            return GestureDetector(
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Card(
-                  elevation: 2.0,
-                  child: Container(
-                    width: 280.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Icon(
-                                cardsList[position].icon,
-                                color: appColors[position],
-                              ),
-                              Icon(
-                                Icons.more_vert,
-                                color: Colors.grey,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 4.0),
-                                child: Text(
-                                  "${cardsList[position].tasksRemaining} Sorular",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: LinearProgressIndicator(
-                                  value: cardsList[position].taskCompletion,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                ),
-              ),
-              onHorizontalDragEnd: (details) {
-                animationController = AnimationController(
-                    vsync: this, duration: Duration(milliseconds: 20));
-                curvedAnimation = CurvedAnimation(
-                    parent: animationController, curve: Curves.fastOutSlowIn);
-                animationController.addListener(() {
-                  setState(() {
-                    currentColor = colorTween.evaluate(curvedAnimation);
-                  });
-                });
-                if (details.velocity.pixelsPerSecond.dx > 0) {
-                  if (cardIndex > 0) {
-                    cardIndex--;
-                    colorTween = ColorTween(
-                        begin: currentColor, end: appColors[cardIndex]);
-                  }
-                } else {
-                  if (cardIndex < 2) {
-                    cardIndex++;
-                    colorTween = ColorTween(
-                        begin: currentColor, end: appColors[cardIndex]);
-                  }
-                }
-                setState(() {
-                  scrollController.animateTo((cardIndex) * 256.0,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.fastOutSlowIn);
-                });
-                colorTween.animate(curvedAnimation);
-                animationController.forward();
-              },
-              onTap: () {
-                Navigator.of(context).pushNamed("/question");
-              },
-            );
-          },
-        ),
-      );
-    }
   }
 }
